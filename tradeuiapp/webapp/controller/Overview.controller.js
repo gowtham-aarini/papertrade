@@ -42,7 +42,7 @@ sap.ui.define([
 			} else if(sValue === "PAPER"){
 				oAppModel.setProperty("/TradeType", "2");
 			} else {
-				oAppModel.setProperty("/TradeType", "2");
+				oAppModel.setProperty("/TradeType", "1");
 			}
 			// this.tradeEntryFilter();
 			this.getDraftData(oAppModel);

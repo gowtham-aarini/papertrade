@@ -1,0 +1,138 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "hmel.com.charteringapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.7",
+      "toolsId": "e1bfbff5-d94a-43a9-b687-f400de10c14c"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/HMELTrading/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "CharteringObject-manage": {
+          "semanticObject": "CharteringObject",
+          "action": "manage",
+          "title": "{{CharteringObject-manage.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.139.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "hmel.com.charteringapp.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "appModel": {
+        "type": "sap.ui.model.json.JSONModel"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "hmel.com.charteringapp.view",
+        "async": true,
+        "viewPath": "hmel.com.charteringapp.view"
+      },
+      "routes": [
+        {
+          "name": "RouteDashboard",
+          "pattern": ":?query:",
+          "target": [
+            "TargetDashboard"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetDashboard": {
+          "id": "Dashboard",
+          "name": "Dashboard"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "hmel.com.charteringapp.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "app-router"
+  }
+}

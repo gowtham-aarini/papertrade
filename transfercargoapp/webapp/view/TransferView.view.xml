@@ -1,0 +1,604 @@
+<mvc:View controllerName="hmel.com.transfercargoapp.controller.TransferView"
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:ui="sap.ui.table">
+    <Page >
+        <content>
+            
+            <!-- Header Table -->
+            <!-- <Table id="transferTable" inset="false">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Transfer List"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                    <Column><Text text="From"/></Column>
+                    <Column><Text text="To"/></Column>
+                    <Column><Text text="Location"/></Column>
+                    <Column><Text text="Operator"/></Column>
+                    <Column><Text text="Living Stable"/></Column>
+                    <Column><Text text="Effective Date"/></Column>
+                    <Column><Text text="Transfer Committed"/></Column>
+                    <Column><Text text="Transfer Completed"/></Column>
+                    <Column><Text text="Application"/></Column>
+                    <Column><Text text="Status"/></Column>
+                    <Column><Text text="Transfer..."/></Column>
+                    <Column><Text text="MDT"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Select>
+                               <core:Item key="Trade" text="Trade"/>
+                            </Select>
+                            <Select>
+                               <core:Item key="Vessel" text="Vessel"/>
+                            </Select>
+                            <Select>
+                               <core:Item key="Ras Tanura" text="Ras Tanura"/>
+                            </Select>
+                            <Select>
+                               <core:Item key="Kumar Rashid" text="Kumar Rashid"/>
+                            </Select>
+                            <Select>
+                               <core:Item key="" text=""/>
+                            </Select>
+                            <DatePicker value="21.08.2025"></DatePicker>
+                            <DatePicker value="21.08.2025"></DatePicker>
+                            <DatePicker value="21.08.2025"></DatePicker>
+                            <DatePicker value="21.08.2025"></DatePicker>
+                             <Select>
+                               <core:Item key="Scheduled Allocated" text=""/>
+                            </Select>
+                            <Text text="30820"></Text>
+                            <Text text="Vessel"></Text>
+
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table> -->
+            <ui:Table
+                id="transferTableId"
+                rows="{/TransferCollection}"
+                selectionMode="None">
+                <ui:rowMode>
+                    <rowmodes:Fixed rowCount="5"></rowmodes:Fixed>
+                </ui:rowMode>
+                <ui:columns>
+                    <ui:Column width="10rem">
+                        <Label text="From" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{From}" text="{From}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="10rem">
+                        <Label text="To" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{To}" text="{To}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="10rem">
+                        <Label text="Location" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{Location}" text="{Location}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="12rem">
+                        <Label text="Operator" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{Operator}" text="{Operator}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="12rem">
+                        <Label text="Living Stable" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{LivingStable}" text="{LivingStable}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="12rem">
+                        <Label text="Effective Date" />
+                        <ui:template>
+                            <DatePicker value="{EffectiveDate}"></DatePicker>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="15rem">
+                        <Label text="Transfer Committed" />
+                        <ui:template>
+                            <DatePicker value="{TransferCommitted}"></DatePicker>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="15rem">
+                        <Label text="Transfer Completed" />
+                        <ui:template>
+                            <DatePicker value="{TransferCompleted}"></DatePicker>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="12rem">
+                        <Label text="Application" />
+                        <ui:template>
+                            <DatePicker value="{Application}"></DatePicker>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="10rem">
+                        <Label text="Status" />
+                        <ui:template>
+                            <Select width="100%">
+                               <core:Item key="{Status}" text="{Status}"/>
+                            </Select>
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="10rem">
+                        <Label text="Transfer..." />
+                        <ui:template>
+                            <Text text="{Transfer}" />
+                        </ui:template>
+                    </ui:Column>
+
+                    <ui:Column width="10rem">
+                        <Label text="MDT" />
+                        <ui:template>
+                            <Text text="{MDT}" />
+                        </ui:template>
+                    </ui:Column>
+                </ui:columns>
+            </ui:Table>
+
+            <IconTabBar expandable="false">
+                <items>
+                    
+            <!-- Trade Tab -->
+            <IconTabFilter text="Transfer From" key="transferFrom">
+
+                <!-- Left Side: Transfer From -->
+                <Panel expandable="true" expanded="true" headerText="Trade Details">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Trade Number"/>
+                        <Select>
+                            <core:Item key="10971" text="10971"/>
+                        </Select>
+                        <Label text="Counterpart"/>
+                        <Input value="Saudi Aramco"/>
+                        <Label text="Open Qty"/>
+                        <Input value="0.00 KBBL"/>
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label text=""/>
+                        <Text text=""/>
+                        
+                        <Label text="Section"/>
+                        <Input value=""/>
+                        <Label text="Contract Qty"/>
+                        <Input value="300.00">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="KBBL">
+                        </Input>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                <Panel expandable="true" expanded="true" headerText="Commodity Details">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Commodity"/>
+                        <Input value="Arab Extra Lt"/>
+                        <Label text="Group 1"/>
+                        <Input value="Crude"/>            
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label text=""/>
+                        <Text text=""/>
+                        <Label text="Group 2"/>
+                        <Input value="Oman-Dubai"/>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                <Panel expandable="true" expanded="true" headerText="Quantity and Pricing" >
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Scheduled Qty"/>
+                        <Input value="300">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="KBBL">
+                        </Input>
+                        <Label text="Nominal Qty"/>
+                        <Input value="300">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="KBBL">
+                        </Input>
+                        <Label text="Invoice Qty"/>
+                        <Input value="297,631">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                       <Select >
+                                <core:Item key="BBL" text="BBL" />
+                            </Select>
+                        <Label text="Ticket Number"/>
+                        <Input value=""/>
+                        <Label text="Override"/>
+                        <CheckBox ></CheckBox>
+                        <Label text="Override Price"/>
+                        <Input value=""/>
+                           
+                        <Label text="Base Price"></Label>
+                        <Input value="">
+                        <layoutData>
+                                <l:GridData span="XL4 L4 M4 S4" />
+                            </layoutData>
+                        </Input>
+                        <HBox >
+                        <Select>
+                             <core:Item text=""></core:Item>
+                        </Select>
+                        <Text text="/" width="1rem" textAlign="Center"></Text>
+                        <Select >
+                             <core:Item text=""></core:Item>
+                        </Select>
+                        </HBox>
+                        <Label text="Settlement Amount"/>
+                        <Input value="-20,988,194.04">
+                           <layoutData>
+                                <l:GridData span="XL5 L4 M4 S8" />
+                            </layoutData>
+                        </Input>
+                        <Select forceSelection="false">
+                            <core:Item key="BBL" text="BBL"/>
+                        </Select>
+                        <Label text="Override FX"/>
+                        <CheckBox />
+
+                        
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label text=""/>
+                        <Text text=""/>
+                        <Label visible="false"/>
+                        <HBox >
+                        <CheckBox text="Multiply"/>
+                        <CheckBox text="Divided by:" selected="true" />
+                        <Input value="1.00"/>
+                        </HBox>
+
+                        <Label visible="false"/>
+                        <Button text="Calculator" class="sapUiLargeMarginEnd" width="30%"></Button>
+
+                        <Label text=""/>
+                        <Text text=""/>
+                        <Label text="Overridden Price Ccy"/>
+                        <Select forceSelection="false">
+                             <core:Item key="" text=""/>
+                        </Select>
+                        <Label text=""/>
+                        <Text text=""/>
+                        <Label visible="false"/>
+                        <Button text="Refresh" class="sapUiLargeMarginEnd" width="30%"></Button>
+                        <Label text="Overridden FX"/>
+                        <Input value=""/>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+            </IconTabFilter>
+
+                   
+             <IconTabFilter text="Transfer To" key="transferTo">
+                <!-- Right Side: Transfer To -->
+                <Panel expandable="true" expanded="true" headerText="Vehicle Details">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Vehicle"/>
+                        <Select>
+                            <core:Item key="2109" text="2109"/>
+                        </Select>
+                        <Label text="MOT"/>
+                        <Input value="Vessel"/>
+                        <Label text="Cargo"/>
+                        <Select>
+                            <core:Item key="2703" text="2703"/>
+                        </Select>
+                        <Label text="Name"/>
+                        <Input value="AXL"/>
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label text="Name"/>
+                        <Input value="Fleves"/>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label text="Reset Date"/>
+                        <DatePicker value="21.08.2025"/>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                 <Panel expandable="true" expanded="true" headerText="Commodity Info">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Commodity"></Label>
+                        <Input value="Arab Extra Lt"/>
+                        <Label text="Group 1"></Label>
+                        <Input value="Crude"/>
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label text="Group 2"/>
+                        <Input value="Oman-Dubai"/>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                <Panel expandable="true" expanded="true" headerText="Cargo Quantities">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Converted Qty"/>
+                        <Input value="297631">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="BBL">
+                        </Input>
+                        <Label text="Gain/Loss"/>
+                        <Input value="0">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="BBL">
+                        </Input>
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                        <Label text="Cargo Qty"/>
+                        <Input value="297,631">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="BBL"></Input>
+                        <Label text="Packaging"/>
+                        <Input value="">
+                        <layoutData>
+                                <l:GridData span="XL5 L4 M4 S4" />
+                        </layoutData>
+                        </Input>
+                        <Input value="">
+                        </Input>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                <Panel expandable="true" expanded="true" headerText="Customs and Transfer" >
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="1"
+                    emptySpanL="1"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
+                    
+                    <f:content>
+                        <!-- Group 1 -->
+                        <core:Title text=""/>
+                        <Label text="Customs Duty Status"/>
+                        <Select>
+                            <core:Item key="N/A" text="N/A"/>
+                        </Select>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label ></Label>
+                        <Text text=""></Text>
+                        <Label text="Transfer At"/>
+                        <Select>
+                            <core:Item key="Contract" text="Contract Price Plus Costs"/>
+                        </Select>
+
+                        <!-- Group 2 -->
+                        <core:Title text=""/>
+                    </f:content>
+                </f:SimpleForm>
+                </Panel>
+                </IconTabFilter>
+                <IconTabFilter text="UDF From" key="udfFrom">
+                      <Panel>
+                            <Table>
+                              <columns>
+                                 <Column>
+                                    <Text text="Field"></Text>
+                                 </Column>
+                                  <Column>
+                                    <Text text="Value"></Text>
+                                 </Column>
+                              </columns>
+                              <items>
+                                  <ColumnListItem>
+                                     <Text text="Quantity"></Text>
+                                     <Text text="39134.620"></Text>
+                                  </ColumnListItem>
+                                  <ColumnListItem>
+                                     <Text text="Temp in Celsius"></Text>
+                                     <Text text="40"></Text>
+                                  </ColumnListItem>
+                                  <ColumnListItem>
+                                     <Text text="Title Transfer Date"></Text>
+                                     <Text text="16-06-2025"></Text>
+                                  </ColumnListItem>
+                              </items>
+                            </Table>
+                            </Panel>
+                </IconTabFilter>
+                <IconTabFilter text="UDF To" key="udfTo" >
+                    <Panel >
+                        <Table>
+                              <columns>
+                                 <Column>
+                                    <Text text="Field"></Text>
+                                 </Column>
+                                  <Column>
+                                    <Text text="Value"></Text>
+                                 </Column>
+                              </columns>
+                              <items>
+                                  <ColumnListItem>
+                                     <Text text="Quantity"></Text>
+                                     <Text text="39134.620"></Text>
+                                  </ColumnListItem>
+                              </items>
+                            </Table>
+                            </Panel>
+                </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

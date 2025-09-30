@@ -1,0 +1,24 @@
+{
+  "generationParameters": {
+    "generationDate": "Tue Sep 16 2025 17:34:48 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "SAP Business Application Studio",
+    "serviceType": "SAP System (ABAP On-Premise)",
+    "metadataFilename": "",
+    "serviceUrl": "https://aarini-development-development-tradingapphmel-srv.cfapps.eu10-004.hana.ondemand.com/odata/v4/HMELTrading/",
+    "appName": "charteringapp",
+    "appTitle": "Chartering App",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "hmel.com",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.139.0",
+    "enableCodeAssist": false,
+    "enableEslint": false,
+    "enableTypeScript": false,
+    "showMockDataInfo": true,
+    "generatorVersion": "1.18.7",
+    "template": "Basic V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [],
+    "launchText": "To launch the generated application, run the following from the generated application root folder:\n\n```\n    npm start\n```"
+  }
+}

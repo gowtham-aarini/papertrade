@@ -1,0 +1,120 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "hmel.com.transfercargoapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.5",
+      "toolsId": "32cf3ebd-93e1-4c1f-b5b1-6d48aa3d6709"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "TradeObject-display": {
+          "semanticObject": "TradeObject",
+          "action": "display",
+          "title": "{{TradeObject-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.139.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "hmel.com.transfercargoapp.i18n.i18n"
+        }
+      },
+      "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/model.json",
+        "preload": true
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "hmel.com.transfercargoapp.view",
+        "async": true,
+        "viewPath": "hmel.com.transfercargoapp.view"
+      },
+      "routes": [
+        {
+          "name": "RouteTransferView",
+          "pattern": ":?query:",
+          "target": [
+            "TargetTransferView"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetTransferView": {
+          "id": "TransferView",
+          "name": "TransferView"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "hmel.com.transfercargoapp.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "app-router"
+  }
+}

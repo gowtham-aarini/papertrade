@@ -1,0 +1,1035 @@
+<mvc:View 
+    controllerName="hmel.com.tradeuiapp.controller.Overview"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:svm="sap.ui.comp.smartvariants"
+    xmlns:ui="sap.ui.table"
+    xmlns:vm="sap.ui.fl.variants"
+    xmlns:columnmenu="sap.m.table.columnmenu"
+    xmlns:sap.ui.fl="sap.ui.fl"
+    xmlns:sap.ui.dt="sap.ui.dt"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+
+    <f:DynamicPage busyIndicatorDelay="500">
+        <f:title>
+            <f:DynamicPageTitle> 
+                <f:heading>
+						<svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
+				</f:heading> 
+                <f:expandedContent>
+					<Label id="expandedLabel" text="No filters active" />
+				</f:expandedContent>
+				<f:snappedContent>
+					<Label id="snappedLabel" text="No filters active" />
+				</f:snappedContent>
+                <f:actions> 
+                    <Button 
+                        id="newBtn"
+                        text="New" 
+                        type="Emphasized" 
+                        class="sapUiSmallMarginEnd sapUiPositive" 
+                        press=".onCreate"/> 
+                    <Button 
+                        id= "draftBtn"
+                        text="Show Drafts" 
+                        type="Emphasized" 
+                        class="sapUiSmallMarginEnd" 
+                        press=".onShowDraftPressed">
+                        <dependents>
+                                <core:Fragment
+                                    fragmentName="hmel.com.tradeuiapp.fragments.DraftSheet"
+                                    type="XML" />
+                            </dependents>
+                    </Button> 
+                </f:actions> 
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+    <f:DynamicPageHeader>
+        <f:content>
+            <fb:FilterBar 
+                id="tradeFilterBar"
+                persistencyKey="myPersKey" 
+                useToolbar="false"
+                search=".onSearch"
+                filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+
+                <fb:filterGroupItems>
+                    <fb:FilterGroupItem name="TRADE_NO" label="Trade Number" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <Input placeholder="Enter Trade Number" change=".onFilterChangeInput"/>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="counterpart/ID" label="Counter Part" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox
+                                name="Counterpart"
+                                selectionChange=".onSelectionChange"
+                                items="{
+                                    path: '/Counterpart'
+                                }">
+                                <core:Item key="{ID}" text="{CTPRTNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    
+                    <fb:FilterGroupItem name="titleTerms/ID" label="Title Terms" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox
+                                name="TitleTerms"
+                                selectionChange=".onSelectionChange"
+                                items="{
+                                    path: '/TitleTerms'
+                                }">
+                                <core:Item key="{ID}" text="{TTLTRMNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="location/ID" label="Location" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox
+                                name="Location"
+                                selectionChange=".onSelectionChange"
+                                items="{
+                                    path: '/Location'
+                                }">
+                                <core:Item key="{ID}" text="{LOCNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="priceMarker/ID" label="Price Marker" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox
+                                name="PriceMarker"
+                                selectionChange=".onSelectionChange"
+                                items="{
+                                    path: '/PriceMarker'
+                                }">
+                                <core:Item key="{ID}" text="{PRCMRKNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="trader/ID" label="Trader" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/Trader'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{TRDRNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="roundingRule/ID" label="Rounding Rule" groupName="General" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiComboBox items="{path: '/RoundingRule'}" selectionChange=".onSelectionChange">
+                            <core:Item key="{ID}" text="{RNDRULNAME}" />
+                        </MultiComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem name="pricingType/ID" label="Pricing Type" groupName="General" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiComboBox items="{path: '/PricingType'}" selectionChange=".onSelectionChange">
+                            <core:Item key="{ID}" text="{PRCTYPNAME}" />
+                        </MultiComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem name="pricingRule/ID" label="Pricing Rule" groupName="General" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiComboBox items="{path: '/PricingRule'}" selectionChange=".onSelectionChange">
+                            <core:Item key="{ID}" text="{PRCRLNAME}" />
+                        </MultiComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                <fb:FilterGroupItem name="pricingUom/ID" label="Pricing UOM" groupName="General" visibleInFilterBar="true">
+                    <fb:control>
+                        <MultiComboBox items="{path: '/PricingUOM'}" selectionChange=".onSelectionChange">
+                            <core:Item key="{ID}" text="{PRCUOMNAME}" />
+                        </MultiComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
+
+                  <fb:FilterGroupItem name="paymentTerms/ID" label="Payment Term" groupName="General" visibleInFilterBar="true">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/PaymentTerm'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{PMTRMNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="paymentTermsRule/ID" label="Payment Terms Rule" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/PaymentTermsRule'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{NAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="paymentCurrency/ID" label="Payment Currency" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/PaymentCurrency'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{PYMTCURNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="creditTerms/ID" label="Credit Terms" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/CreditTerms'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{CRDTRMNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="mtmCurve/ID" label="MTM Curve" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/MTMCurve'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{MTMCRVNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="gtc/ID" label="GTC" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/GTC'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{GTCNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="instrument/ID" label="Instrument" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/Instrument'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{INSTRNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="commodity/ID" label="Commodity" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/Commodity'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{CMDTYNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="buyOrSell/ID" label="Buy Or Sell" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/BuyOrSell'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{BOSNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="quantityUnit/ID" label="Quantity Unit" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/QuantityUnit'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{QTYUNTNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="strategy/ID" label="Strategy" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/Strategy'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{STRGYNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="settledPriceCurve1/ID" label="Settled Price Curve 1" groupName="General" visibleInFilterBar="false">
+                        <fb:control>
+                            <MultiComboBox items="{path: '/SettledPriceCurve1'}" selectionChange=".onSelectionChange">
+                                <core:Item key="{ID}" text="{STPCRVNAME}" />
+                            </MultiComboBox>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="mtmCurve1/ID" label="MTM Curve 1" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/MTMCurve1'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{MTMCR1NAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="mtmCurve2/ID" label="MTM Curve 2" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/MTMCurve2'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{MTMCR2NAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="settlementDate1/ID" label="Settlement Date 1" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/SettlementDate1'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{SETDAT1NAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="mandatePriceUom/ID" label="Mandate Price UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/MandatePriceUOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{MNDPUNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <!-- <fb:FilterGroupItem name="Attachments" label="Attachments" groupName="General" visibleInFilterBar="true">
+                            <fb:control>
+                                <Input value="{path: '/Attachments'}" />
+                            </fb:control>
+                        </fb:FilterGroupItem> -->
+
+                        <fb:FilterGroupItem name="uom/ID" label="UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/UOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{UOMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="vehicle/ID" label="Vehicle" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/Vehicle'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{VEHCLENAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="transferStatus/ID" label="Transfer Status" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/TransferStatus'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{TRSNFRNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="grnQtyUom/ID" label="GRN Quantity UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/GRNQuantityUOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{GRQTUOMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="invoiceQtyUom/ID" label="Invoice Quantity UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/InvoiceQuantityUOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{IVQYUOMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="outturnQtyUnit/ID" label="Outturn Quantity Unit" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/OutturnQuantityUnit'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{OTRNQYUNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costTypeSeparateLine/ID" label="Cost Type Separate Line" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostTypeSeparateLine'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{CSTSLNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costTypeUom/ID" label="Cost Type UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostTypeUOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{CTUOMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costTypeCurrency/ID" label="Cost Type Currency" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostTypeCurrency'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{CSTCURNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costTypeEstFinal/ID" label="Cost Type EstFinal" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                 <MultiComboBox items="{path: '/CostTypeEstFinal'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ID}" text="{CSTFINNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="deliveryTerms/DLVTRMID" label="Delivery Terms" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/DeliveryTerms'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{DLVTRMID}" text="{DLVTRMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="deliveryLoad/DLVLOADID" label="Delivery Load" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/DeliveryLoad'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{DLVLOADID}" text="{DLVLOADNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <!-- <fb:FilterGroupItem name="tradeMain/TRADEID" label="Trade Main" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/TradeMain'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{TRADEID}" text="{TRADETYPENAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem> -->
+
+                        <fb:FilterGroupItem name="ctrader/CTRADRID" label="Confirming Trader" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/ConfirmingTrader'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{CTRADRID}" text="{CTRADERNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costBasis/CSTBSID" label="Cost Basis" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostBasis'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{CSTBSID}" text="{CSTBSNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="basedpl/BASDPLID" label="Based On PL" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/BasedOnPL'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{BASDPLID}" text="{BASDPLNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costStatus/CSTSTSID" label="Cost Status" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostStatus'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{CSTSTSID}" text="{CSTSTSNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costSchedule/CSCHID" label="Cost Schedule" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostSchedule'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{CSCHID}" text="{CSCHNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="setCurrency/STCURID" label="Settlement Currency" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/SettlementCurrency'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{STCURID}" text="{STCURNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="costRevision/CSTREVID" label="Cost Revision" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/CostRevision'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{CSTREVID}" text="{CSTREVNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="company/COMPID" label="Company" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/Company'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{COMPID}" text="{COMPNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="paymentTerm/PMNTRMID" label="Payment Term Rule" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/PaymentTermRule'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{PMNTRMID}" text="{PMNTRMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="priceIndex/PRCINDID" label="Price Index" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/PriceIndex'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{PRCINDID}" text="{PRCINDNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="priceCurrency/PRCURRID" label="Price Currency" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/PriceCurrency'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{PRCURRID}" text="{PRCURNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="settlementUom/STLMTUUM" label="Settlement UOM" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/SettlementUOM'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{STLMTUUM}" text="{STLUUMNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="payAssignment/PAYASNID" label="Payment Assignment" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/PaymentAssignment'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{PAYASNID}" text="{PAYASNNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="applicableLaw/APPLAWID" label="Applicable Law" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/ApplicableLaw'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{APPLAWID}" text="{APPLAWNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="letterOfCredit/LCREDID" label="Letter Of Credit" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/LetterOfCredit'}">
+                                    <core:Item key="{LCREDID}" text="{LCREDNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="interCompany/INTERCOMPID" label="Inter Company" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/InterCompany'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{INTERCOMPID}" text="{INTCOMPNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="deliveryDischarge/DLVDSCHID" label="Delivery Discharge" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/DeliveryDischarge'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{DLVDSCHID}" text="{DLVDSCHNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="originLocation/ZORGLCTN" label="Origin Location" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/OriginLocation'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ZORGLCTN}" text="{ORGNNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <!-- <fb:FilterGroupItem name="contractEvent" label="ContractEvent" groupName="General" visibleInFilterBar="true">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/ContractEvent'}">
+                                    <core:Item key="{ID}" text="{Name}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem> -->
+
+                        <fb:FilterGroupItem name="period/ZPERIODID" label="Period" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/Period'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ZPERIODID}" text="{PERIDNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+
+                        <fb:FilterGroupItem name="span/ZSPANID" label="Span" groupName="General" visibleInFilterBar="false">
+                            <fb:control>
+                                <MultiComboBox items="{path: '/Span'}" selectionChange=".onSelectionChange">
+                                    <core:Item key="{ZSPANID}" text="{SPANNAME}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
+        </f:content>
+    </f:DynamicPageHeader>
+    </f:header>
+        <f:content>
+            <ui:Table
+                        visible="true"
+                        id="dashboardTable"
+                        enableBusyIndicator="true"
+                        busyIndicatorSize="Medium"
+                        rows="{
+                            path: '/TradeEntry',
+                            parameters: {
+                                $count: true
+                            }
+                        }"
+                        selectionMode="None"
+                        sap.ui.fl:flexibility="sap/m/flexibility/EngineFlex"
+                        rowActionCount="1">
+                                <ui:extension>
+                                    <OverflowToolbar>
+                                        <Title id="title" text="Trades"/>
+                                        <ToolbarSpacer/>
+                                        <Button icon="sap-icon://action-settings" press="openPersoDialog"/>
+                                    </OverflowToolbar>
+                                </ui:extension>
+                                <ui:dependents>
+                                    <columnmenu:Menu id="menu" showTableSettingsButton="true" tableSettingsPressed="openPersoDialog">
+                                    </columnmenu:Menu>
+                                </ui:dependents>
+                                <ui:rowActionTemplate>
+                                <ui:RowAction visible="true">
+                                    <ui:RowActionItem type="Navigation" press=".onRowPress"></ui:RowActionItem>
+                                </ui:RowAction>
+                                </ui:rowActionTemplate>
+                                <!-- <ui:rowMode>
+                                    <rowmodes:Auto></rowmodes:Auto>
+                                </ui:rowMode> -->
+                                <ui:columns>
+                                    <ui:Column app:p13nKey="TRADE_NO" sortProperty="tradeNumber" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Trade Number" />
+                                        <ui:template>
+                                            <Link text="{TRADE_NO}" press="onRowPress" />
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="tradeMain" sortProperty="tradeMain" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Trade Main" />
+                                        <ui:template>
+                                            <Text text="{tradeMain/TRADETYPENAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="counterpart" sortProperty="counterPart" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Counter Part" />
+                                        <ui:template>
+                                            <Text text="{counterpart/CTPRTNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="titleTerms" sortProperty="titleTerms" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Title Terms" />
+                                        <ui:template>
+                                            <Text text="{titleTerms/TTLTRMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="location" sortProperty="location" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Location" />
+                                        <ui:template>
+                                            <Text text="{location/LOCNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="priceMarker" sortProperty="priceMarker" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Price Marker" />
+                                        <ui:template>
+                                            <Text text="{priceMarker/PRCMRKNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="trader" sortProperty="trader" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Trader" />
+                                        <ui:template>
+                                            <Text text="{trader/TRDRNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="roundingRule" sortProperty="roundingRule" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Rounding Rule" />
+                                        <ui:template>
+                                            <Text text="{roundingRule/RNDRULNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="pricingType" sortProperty="pricingType" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Pricing Type" />
+                                        <ui:template>
+                                            <Text text="{pricingType/PRCTYPNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="pricingRule" sortProperty="pricingRule" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Pricing Rule" />
+                                        <ui:template>
+                                            <Text text="{pricingRule/PRCRLNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="pricingUom" sortProperty="pricingUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Pricing UOM" />
+                                        <ui:template>
+                                            <Text text="{pricingUom/PRCUOMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="paymentTerms" sortProperty="paymentTerms" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Payment Terms" />
+                                        <ui:template>
+                                            <Text text="{paymentTerms/PMTRMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="paymentTermsRule" sortProperty="paymentTermsRule" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Payment Terms Rule" />
+                                        <ui:template>
+                                            <Text text="{paymentTermsRule/NAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="paymentCurrency" sortProperty="paymentCurrency" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Payment Currency" />
+                                        <ui:template>
+                                            <Text text="{paymentCurrency/PYMTCURNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="creditTerms" sortProperty="creditTerms" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Credit Terms" />
+                                        <ui:template>
+                                            <Text text="{creditTerms/CRDTRMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="mtmCurve" sortProperty="mtmCurve" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="MTM Curve" />
+                                        <ui:template>
+                                            <Text text="{mtmCurve/MTMCRVNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="gtc" sortProperty="gtc" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="GTS" />
+                                        <ui:template>
+                                            <Text text="{gtc/GTCNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="instrument" sortProperty="instrument" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Instrument" />
+                                        <ui:template>
+                                            <Text text="{instrument/INSTRNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="commodity" sortProperty="commodity" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Commodity" />
+                                        <ui:template>
+                                            <Text text="{commodity/CMDTYNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="buyOrSell" sortProperty="buyOrSell" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Buy Or Sell" />
+                                        <ui:template>
+                                            <Text text="{buyOrSell/BOSNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="quantityUnit" sortProperty="quantityUnit" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Quantity Unit" />
+                                        <ui:template>
+                                            <Text text="{quantityUnit/QTYUNTNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="strategy" sortProperty="strategy" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Strategy" />
+                                        <ui:template>
+                                            <Text text="{strategy/STRGYNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="settledPriceCurve1" sortProperty="settledPriceCurve1" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Settled Price Curve 1" />
+                                        <ui:template>
+                                            <Text text="{settledPriceCurve1/STPCRVNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="mtmCurve1" sortProperty="mtmCurve1" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="MTM Curve 1" />
+                                        <ui:template>
+                                            <Text text="{mtmCurve1/MTMCR1NAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="mtmCurve2" sortProperty="mtmCurve2" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="MTM Curve 2" />
+                                        <ui:template>
+                                            <Text text="{mtmCurve2/MTMCR2NAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="settlementDate1" sortProperty="settlementDate1" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Settlement Date 1" />
+                                        <ui:template>
+                                            <Text text="{settlementDate1/SETDAT1NAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="mandatePriceUom" sortProperty="mandatePriceUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Mandate Price UOM" />
+                                        <ui:template>
+                                            <Text text="{mandatePriceUom/MNDPUNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <!-- <ui:Column app:p13nKey="attachments" sortProperty="attachments" headerMenu="menu" resizable="true" width="11rem" autoResizable="true">
+                                        <Label text="Attachments" />
+                                        <ui:template>
+                                            <Text text="{mandatePriceUom/MNDPUNAME}"/>
+                                        </ui:template>
+                                    </ui:Column> -->
+
+                                    <ui:Column app:p13nKey="uom" sortProperty="uom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="UOM" />
+                                        <ui:template>
+                                            <Text text="{uom/UOMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="vehicle" sortProperty="vehicle" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Vehicle" />
+                                        <ui:template>
+                                            <Text text="{vehicle/VEHCLENAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="transferStatus" sortProperty="transferStatus" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Transfer Status" />
+                                        <ui:template>
+                                            <Text text="{transferStatus/TRSNFRNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="grnQtyUom" sortProperty="grnQtyUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="GRN Quantity UOM" />
+                                        <ui:template>
+                                            <Text text="{grnQtyUom/GRQTUOMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="invoiceQtyUom" sortProperty="invoiceQtyUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Invoice Quantity UOM" />
+                                        <ui:template>
+                                            <Text text="{invoiceQtyUom/IVQYUOMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="outturnQtyUnit" sortProperty="outturnQtyUnit" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Outturn Quantity Unit" />
+                                        <ui:template>
+                                            <Text text="{outturnQtyUnit/OTRNQYUNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costTypeSeparateLine" sortProperty="costTypeSeparateLine" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Type Separate Line" />
+                                        <ui:template>
+                                            <Text text="{costTypeSeparateLine/CSTSLNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costTypeUom" sortProperty="costTypeUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Type UOM" />
+                                        <ui:template>
+                                            <Text text="{costTypeUom/CTUOMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costTypeCurrency" sortProperty="costTypeCurrency" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Type Currency" />
+                                        <ui:template>
+                                            <Text text="{costTypeCurrency/CSTCURNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costTypeEstFinal" sortProperty="costTypeEstFinal" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Type EstFinal" />
+                                        <ui:template>
+                                            <Text text="{costTypeEstFinal/CSTFINNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="deliveryTerms" sortProperty="deliveryTerms" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Delivery Terms" />
+                                        <ui:template>
+                                            <Text text="{deliveryTerms/DLVTRMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="deliveryLoad" sortProperty="deliveryLoad" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Delivery Load" />
+                                        <ui:template>
+                                            <Text text="{deliveryLoad/DLVLOADNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="ctrader" sortProperty="ctrader" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Confirming Trader" />
+                                        <ui:template>
+                                            <Text text="{ctrader/CTRADERNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costBasis" sortProperty="costBasis" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Basis" />
+                                        <ui:template>
+                                            <Text text="{costBasis/CSTBSNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="basedpl" sortProperty="basedpl" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Based On PL" />
+                                        <ui:template>
+                                            <Text text="{basedpl/BASDPLNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costStatus" sortProperty="costStatus" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Status" />
+                                        <ui:template>
+                                            <Text text="{costStatus/CSTSTSNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costSchedule" sortProperty="costSchedule" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Schedule" />
+                                        <ui:template>
+                                            <Text text="{costSchedule/CSCHNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="setCurrency" sortProperty="setCurrency" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Settlement Currency" />
+                                        <ui:template>
+                                            <Text text="{setCurrency/STCURNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="costRevision" sortProperty="costRevision" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Cost Revision" />
+                                        <ui:template>
+                                            <Text text="{costRevision/CSTREVNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="company" sortProperty="company" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Company" />
+                                        <ui:template>
+                                            <Text text="{company/COMPNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="paymentTerm" sortProperty="paymentTerm" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Payment Term Rule" />
+                                        <ui:template>
+                                            <Text text="{paymentTerm/PMNTRMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="priceIndex" sortProperty="priceIndex" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Price Index" />
+                                        <ui:template>
+                                            <Text text="{priceIndex/PRCINDNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="priceCurrency" sortProperty="priceCurrency" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Price Currency" />
+                                        <ui:template>
+                                            <Text text="{priceCurrency/PRCURNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="settlementUom" sortProperty="settlementUom" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Settlement UOM" />
+                                        <ui:template>
+                                            <Text text="{settlementUom/STLUUMNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="payAssignment" sortProperty="payAssignment" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Payment Assignment" />
+                                        <ui:template>
+                                            <Text text="{payAssignment/PAYASNNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="applicableLaw" sortProperty="applicableLaw" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Applicable Law" />
+                                        <ui:template>
+                                            <Text text="{applicableLaw/APPLAWNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="letterOfCredit" sortProperty="letterOfCredit" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Letter Of Credit" />
+                                        <ui:template>
+                                            <Text text="{letterOfCredit/LCREDNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="interCompany" sortProperty="interCompany" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Inter Company" />
+                                        <ui:template>
+                                            <Text text="{interCompany/INTCOMPNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="deliveryDischarge" sortProperty="deliveryDischarge" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Delivery Discharge" />
+                                        <ui:template>
+                                            <Text text="{deliveryDischarge/DLVDSCHNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="originLocation" sortProperty="originLocation" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Origin Location" />
+                                        <ui:template>
+                                            <Text text="{originLocation/ORGNNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <!-- <ui:Column app:p13nKey="contractEvent" sortProperty="contractEvent" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Contract Event" />
+                                        <ui:template>
+                                            <Text text="{contractEvent/ORGNNAME}"/>
+                                        </ui:template>
+                                    </ui:Column> -->
+
+                                    <ui:Column app:p13nKey="period" sortProperty="period" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Period" />
+                                        <ui:template>
+                                            <Text text="{period/PERIDNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+
+                                    <ui:Column app:p13nKey="span" sortProperty="span" headerMenu="menu" resizable="true" width="11rem" autoResizable="true" visible="false">
+                                        <Label text="Span" />
+                                        <ui:template>
+                                            <Text text="{span/SPANNAME}"/>
+                                        </ui:template>
+                                    </ui:Column>
+                                </ui:columns>
+                            </ui:Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

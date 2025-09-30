@@ -1,0 +1,121 @@
+_schema-version: "3.2"
+ID: hmeltradeapp
+version: 0.0.1
+modules:
+- name: hmeltradeapp-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: hmeltradeapp-destination-service
+    parameters:
+      content-target: true
+  - name: hmeltradeapp_html_repo_host
+    parameters:
+      service-key:
+        name: hmeltradeapp_html_repo_host-key
+  - name: uaa_hmeltradeapp
+    parameters:
+      service-key:
+        name: uaa_hmeltradeapp-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: app_router_hmeltradeapp_html_repo_host
+          ServiceInstanceName: hmeltradeapp-html5-app-host-service
+          ServiceKeyName: hmeltradeapp_html_repo_host-key
+          sap.cloud.service: app-router
+        - Authentication: OAuth2UserTokenExchange
+          Name: app_router_uaa_hmeltradeapp
+          ServiceInstanceName: hmeltradeapp-xsuaa-service
+          ServiceKeyName: uaa_hmeltradeapp-key
+          sap.cloud.service: app-router
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: hmeltradeapp-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: hmeltradeapp_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - hmelcomtradeuiapp.zip
+      name: hmelcomtradeuiapp
+      target-path: resources/
+    - artifacts:
+      - hmelcomtransfercargoapp.zip
+      name: hmelcomtransfercargoapp
+      target-path: resources/
+    - artifacts:
+      - hmelcomcharteringapp.zip
+      name: hmelcomcharteringapp
+      target-path: resources/
+- name: hmelcomtradeuiapp
+  type: html5
+  path: tradeuiapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: hmelcomtransfercargoapp
+  type: html5
+  path: transfercargoapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: hmelcomcharteringapp
+  type: html5
+  path: charteringapp
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: hmeltradeapp-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: hmeltradeapp-destination-service
+    service-plan: lite
+- name: hmeltradeapp_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: hmeltradeapp-html5-app-host-service
+    service-plan: app-host
+- name: uaa_hmeltradeapp
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: hmeltradeapp-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true

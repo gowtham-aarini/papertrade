@@ -1,0 +1,194 @@
+<mvc:View
+    controllerName="hmel.com.charteringapp.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+>
+    <Page
+        id="page"
+    >   
+        <HBox alignItems="Center" justifyContent="Start" renderType="Bare" width="100%">
+
+            <Label text="Trade Number:" class="sapUiSmallMarginBeginEnd" labelFor="tradeNumber"/>
+            <ComboBox
+                id="tradeNumber"
+                selectedKey="{appModel>/CharteringDetails/TRADE_NO}"
+                width="15rem"
+                class="sapUiSmallMarginEnd"
+                items="{
+                    path: '/TradeEntry'
+                }">
+                <core:Item
+                    key="{TRADE_NO}"
+                    text="{TRADE_NO}" />
+            </ComboBox>
+
+        </HBox>
+        <Panel
+            expandable="false"
+            expanded="true"
+            headerText="Chartering"
+            width="auto"
+            class="sapUiResponsiveMargin"
+        >
+            <f:SimpleForm
+                id="SimpleFormForSellerAndBuyer"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="12"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="2"
+                columnsM="6"
+            >
+                <f:content>
+                    <!-- 1st section -->
+                    <core:Title text="Delivery" />
+                    <Label
+                        text="Vehicle"
+                    />
+                    <ComboBox
+                        id="vehiclecb"
+                        enabled="{appModel>/IsEditMode}"
+                        selectedKey="{appModel>/CharteringDetails/VEHICLEID}"
+                        items="{
+                                    path: '/Vehicle',
+                                    sorter: { path: 'VEHCLENAME' }
+                                }"
+                    >
+                        <core:Item
+                            key="{ID}"
+                            text="{VEHCLENAME}"
+                        />
+                    </ComboBox>
+
+                    <Label
+                        text="Location"
+                    />
+                    <ComboBox
+                        id="locationcb"
+                        selectedKey="{appModel>/CharteringDetails/ZLOCATION}"
+                        enabled="{appModel>/IsEditMode}"
+                        items="{
+                                    path: '/Location',
+                                    sorter: { path: 'LOCNAME' }
+                                }"
+                    >
+                        <core:Item
+                            key="{ID}"
+                            text="{LOCNAME}"
+                        />
+                    </ComboBox>
+
+                    <Label
+                        text="Demurrage Days"
+                    />
+                    <Input type="Number" value="{appModel>/CharteringDetails/DEMRGEDAYS}" enabled="{appModel>/IsEditMode}"></Input>
+
+                    <Label
+                        text="Demurrage Rate"
+                    />
+                    <Input type="Number" value="{appModel>/CharteringDetails/DEMRGERATE}" enabled="{appModel>/IsEditMode}"></Input>
+
+                    <Label
+                        text="Demurrage Rate UOM"
+                    />
+                    <ComboBox
+                        selectedKey="{appModel>/CharteringDetails/DEMRGRTUOM}"
+                        enabled="{appModel>/IsEditMode}"
+                        items="{
+                                    path: '/TradeEntry'
+                                }"
+                    >
+                        <core:Item
+                            key="{TRADE_NO}"
+                            text="{DEMRGRTUOM}"
+                        />
+                    </ComboBox>
+
+
+                    <!-- 2nd section -->
+                    <core:Title text="Cost" />
+                    <Label text="Cost Type separate line for each cost" />
+                    <ComboBox
+                        selectedKey="{appModel>/CharteringDetails/CTSEPERATLID}"
+                        enabled="{appModel>/IsEditMode}"
+                        items="{
+                                    path: '/CostTypeSeparateLine'
+                                }"
+                    >
+                        <core:Item
+                            key="{ID}"
+                            text="{CSTSLNAME}"
+                        />
+                    </ComboBox>
+
+                    <Label
+                        text="Cost Type UOM separate for each cost"
+                    />
+                    <Input type="Text" enabled="{appModel>/IsEditMode}"></Input>
+
+                    <Label text="Cost Type Currency separate for each cost" />
+                    <ComboBox
+                        id="costTypeForEachCostcb"
+                        selectedKey="{appModel>/CharteringDetails/COSTYPEUOMID}"
+                        enabled="{appModel>/IsEditMode}"
+                        items="{
+                                    path: '/CostTypeUOM',
+                                    sorter: { path: 'CTUOMNAME' }
+                                }"
+                    >
+                        <core:Item
+                            key="{ID}"
+                            text="{CTUOMNAME}"
+                        />
+                    </ComboBox>
+
+                    <Label
+                        text="Cost Type Currency separate for each cost"
+                    />
+                    <Input type="Number" value="{appModel>/CharteringDetails/COSTYPECURID}" enabled="{appModel>/IsEditMode}"></Input>
+
+                    <Label text="Cost Type Estimate/Final separate for each cost" />
+                    <ComboBox
+                        selectedKey="{appModel>/CharteringDetails/COSTSEPTYPE}"
+                        enabled="{appModel>/IsEditMode}"
+                        items="{
+                                    path: '/TradeEntry',
+                                    sorter: { path: 'COSTSEPTYPE' }
+                                }"
+                    >
+                        <core:Item
+                            key="{TRADE_NO}"
+                            text="{COSTSEPTYPE}"
+                        />
+                    </ComboBox>
+                </f:content>
+            </f:SimpleForm>
+        </Panel>
+        <footer>
+			<OverflowToolbar id="dashboardFooter">
+				<ToolbarSpacer/>
+                <Button type="Accept" text="Edit" icon="sap-icon://edit" press="onPressEdit" enabled="{appModel>/IsEditEnabled}">
+					<layoutData><OverflowToolbarLayoutData priority="NeverOverflow" /></layoutData>
+				</Button>
+				<Button type="Accept" text="Save" enabled="{appModel>/IsSaveEnabled}" icon="sap-icon://save" press="onPressSave">
+                    <customData>
+                        <core:CustomData key="action" value="save" />
+                    </customData>
+					<layoutData><OverflowToolbarLayoutData priority="NeverOverflow" /></layoutData>
+				</Button>
+
+			</OverflowToolbar>
+		</footer>
+    </Page>
+</mvc:View>

@@ -399,7 +399,7 @@ sap.ui.define([
 
                     if (!isNaN(fValue)) {
                         // ✅ round down (floor)
-                        var iRounded = Math.floor(fValue);
+                        var iRounded = Math.floor(fValue).toFixed(3);
 
                         // update the model
                         oAppModel.setProperty("/TradeDetails/MTMFACTOR", iRounded);
